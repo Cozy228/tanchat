@@ -28,8 +28,7 @@ type ComposerProps = {
   disclaimer?: string;
 };
 
-const DEFAULT_DISCLAIMER =
-  "TanChat is powered by your configured model. Verify critical code.";
+const DEFAULT_DISCLAIMER = "TanChat is powered by your configured model. Verify critical code.";
 
 export function Composer({
   value,

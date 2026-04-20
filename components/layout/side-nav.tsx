@@ -1,9 +1,4 @@
-import {
-  MessageCircleIcon,
-  PlusIcon,
-  Settings2Icon,
-  type LucideIcon,
-} from "lucide-react";
+import { MessageCircleIcon, PlusIcon, Settings2Icon, type LucideIcon } from "lucide-react";
 
 /*
  * Left side nav, 64-wide, desktop-only per Stitch.
@@ -24,6 +19,7 @@ export type SideNavItem = {
   icon: LucideIcon;
   active?: boolean;
   onClick?: () => void;
+  testId?: string;
 };
 
 type SideNavProps = {
@@ -72,6 +68,7 @@ export function SideNav({ onNewChat, onOpenSettings, canClear }: SideNavProps) {
             label: "Settings",
             icon: Settings2Icon,
             onClick: onOpenSettings,
+            testId: "chat-config-button",
           }}
         />
       </div>
@@ -86,19 +83,15 @@ function BrandBlock() {
         T
       </div>
       <div className="flex min-w-0 flex-col leading-none">
-        <span className="truncate text-lg font-bold tracking-tight text-on-surface">
-          TanChat
-        </span>
-        <span className="mt-1 text-xs font-medium text-on-surface-variant">
-          Local dev
-        </span>
+        <span className="truncate text-lg font-bold tracking-tight text-on-surface">TanChat</span>
+        <span className="mt-1 text-xs font-medium text-on-surface-variant">Local dev</span>
       </div>
     </div>
   );
 }
 
 function NavLink({ item }: { item: SideNavItem }) {
-  const { label, icon: Icon, active, onClick } = item;
+  const { label, icon: Icon, active, onClick, testId } = item;
   const base =
     "flex w-full items-center gap-3 rounded-lg px-3 py-2 text-left text-sm tracking-tight transition-colors";
   const tone = active
@@ -114,6 +107,7 @@ function NavLink({ item }: { item: SideNavItem }) {
     <button
       aria-current={active ? "page" : undefined}
       className={`${base} ${tone}`}
+      data-testid={testId}
       disabled={!onClick && !active}
       onClick={onClick}
       type="button"

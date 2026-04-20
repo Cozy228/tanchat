@@ -67,9 +67,7 @@ export function EmptyState({ greeting, subline, onSelectPrompt }: EmptyStateProp
         <h2 className="bg-gradient-to-r from-zinc-900 to-zinc-500 bg-clip-text text-4xl font-bold tracking-[-0.02em] text-transparent md:text-5xl">
           {greeting}
         </h2>
-        <p className="text-lg font-medium text-on-surface-variant md:text-xl">
-          {subline}
-        </p>
+        <p className="text-lg font-medium text-on-surface-variant md:text-xl">{subline}</p>
       </header>
 
       <div className="grid gap-4 sm:grid-cols-2">
@@ -101,12 +99,8 @@ function SuggestionTile({
         className="pointer-events-none absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100"
       />
       <Icon className="relative z-10 mb-4 size-7 text-on-surface-variant/70 transition-colors group-hover:text-primary" />
-      <span className="relative z-10 mb-1 font-semibold text-on-surface">
-        {title}
-      </span>
-      <span className="relative z-10 text-sm text-on-surface-variant">
-        {caption}
-      </span>
+      <span className="relative z-10 mb-1 font-semibold text-on-surface">{title}</span>
+      <span className="relative z-10 text-sm text-on-surface-variant">{caption}</span>
     </button>
   );
 }

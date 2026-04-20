@@ -82,10 +82,7 @@ export function ChatConfigSheet({
       >
         <div className="flex items-start justify-between gap-4">
           <div className="space-y-2">
-            <h2
-              className="text-2xl font-semibold tracking-[-0.02em]"
-              id="endpoint-settings-title"
-            >
+            <h2 className="text-2xl font-semibold tracking-[-0.02em]" id="endpoint-settings-title">
               Endpoint settings
             </h2>
             <p className="text-sm leading-6 text-on-surface-variant">

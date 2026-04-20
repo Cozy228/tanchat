@@ -1,4 +1,11 @@
-import { BotIcon, CopyIcon, PencilIcon, RefreshCwIcon, ThumbsDownIcon, ThumbsUpIcon } from "lucide-react";
+import {
+  BotIcon,
+  CopyIcon,
+  PencilIcon,
+  RefreshCwIcon,
+  ThumbsDownIcon,
+  ThumbsUpIcon,
+} from "lucide-react";
 import { Response } from "@/components/elements/response";
 import type { ChatMessage } from "@/lib/chat-types";
 

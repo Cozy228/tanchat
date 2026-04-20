@@ -18,17 +18,10 @@ type TopAppBarProps = {
   onClearConversation: () => void;
 };
 
-export function TopAppBar({
-  title,
-  isConfigured,
-  canClear,
-  onClearConversation,
-}: TopAppBarProps) {
+export function TopAppBar({ title, isConfigured, canClear, onClearConversation }: TopAppBarProps) {
   return (
     <header className="sticky top-0 z-30 flex h-16 w-full items-center justify-between bg-[color-mix(in_oklab,var(--surface)_80%,transparent)] px-4 backdrop-blur-md md:px-6">
-      <h1 className="truncate text-xl font-black tracking-tight text-on-surface">
-        {title}
-      </h1>
+      <h1 className="truncate text-xl font-black tracking-tight text-on-surface">{title}</h1>
 
       <div className="flex items-center gap-2">
         <button

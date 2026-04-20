@@ -16,7 +16,7 @@ import {
   writeEndpointConfig,
 } from "@/lib/chat-config";
 import type { ChatMessage } from "@/lib/chat-types";
-import { createMockAssistantReply } from "@/lib/openai-compatible";
+import { requestOpenAICompatibleReply } from "@/lib/openai-compatible";
 import { generateUUID, getErrorMessage } from "@/lib/utils";
 import { ChatConfigSheet } from "./chat-config-sheet";
 
@@ -25,8 +25,8 @@ import { ChatConfigSheet } from "./chat-config-sheet";
  * three-zone shell (SideNav / TopAppBar / canvas + composer).
  *
  * The visual vocabulary lives in the subcomponents so this file stays
- * focused on behavior: configure → send → mock reply, with clean stop
- * and clear transitions.
+ * focused on behavior: configure → send → endpoint reply, with clean
+ * stop and clear transitions.
  */
 
 const PRODUCT_NAME = "TanChat Engine";
@@ -128,7 +128,7 @@ export function ChatWorkspace() {
     abortControllerRef.current = controller;
 
     try {
-      const assistantReply = await createMockAssistantReply({
+      const assistantReply = await requestOpenAICompatibleReply({
         config,
         messages: nextMessages,
         signal: controller.signal,
@@ -202,9 +202,7 @@ export function ChatWorkspace() {
                     />
                   ))}
 
-                  {status === "sending" ? (
-                    <StreamingIndicator productName={PRODUCT_NAME} />
-                  ) : null}
+                  {status === "sending" ? <StreamingIndicator productName={PRODUCT_NAME} /> : null}
                 </div>
               )}
             </div>

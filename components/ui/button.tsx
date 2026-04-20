@@ -32,10 +32,8 @@ const buttonVariants = cva(
           "bg-destructive text-destructive-foreground hover:brightness-110 active:brightness-95",
         outline:
           "border border-outline-variant/15 bg-transparent text-foreground hover:bg-surface-container-high",
-        secondary:
-          "bg-surface-container-highest text-on-surface hover:bg-surface-container-high",
-        ghost:
-          "text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface",
+        secondary: "bg-surface-container-highest text-on-surface hover:bg-surface-container-high",
+        ghost: "text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface",
         link: "text-primary underline-offset-4 hover:underline",
       },
       size: {
