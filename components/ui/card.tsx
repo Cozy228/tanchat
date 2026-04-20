@@ -2,11 +2,20 @@ import * as React from "react";
 
 import { cn } from "@/lib/utils";
 
+/*
+ * Cards are tonal, not bordered. They sit on surface-container-low by
+ * default, which naturally lifts off the base `--surface` background.
+ * Structural separation between header/content/footer uses padding, not
+ * dividers.
+ */
 const Card = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
   ({ className, ...props }, ref) => (
     <div
       ref={ref}
-      className={cn("rounded-lg border bg-card text-card-foreground shadow-sm", className)}
+      className={cn(
+        "rounded-xl bg-surface-container-low text-foreground shadow-[var(--shadow-ambient)]",
+        className,
+      )}
       {...props}
     />
   ),
@@ -33,7 +42,7 @@ CardTitle.displayName = "CardTitle";
 
 const CardDescription = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
   ({ className, ...props }, ref) => (
-    <div ref={ref} className={cn("text-sm text-muted-foreground", className)} {...props} />
+    <div ref={ref} className={cn("text-sm text-on-surface-variant", className)} {...props} />
   ),
 );
 CardDescription.displayName = "CardDescription";

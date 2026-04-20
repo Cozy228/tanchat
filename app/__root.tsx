@@ -1,7 +1,13 @@
 import { createRootRoute, HeadContent, Outlet, Scripts } from "@tanstack/react-router";
 import { Toaster } from "sonner";
-import { ThemeProvider } from "@/components/theme-provider";
 import appCss from "./globals.css?url";
+
+/*
+ * Locked to the "Zinc Cobalt" light palette (Stitch DS asset 913d8a5d…).
+ * `theme-color` mirrors --surface so mobile browser chrome blends with
+ * the interface.
+ */
+const THEME_COLOR = "#fbf8ff";
 
 export const Route = createRootRoute({
   head: () => ({
@@ -11,6 +17,8 @@ export const Route = createRootRoute({
         name: "viewport",
         content: "width=device-width, initial-scale=1",
       },
+      { name: "theme-color", content: THEME_COLOR },
+      { name: "color-scheme", content: "light" },
       { title: "TanChat" },
       {
         name: "description",
@@ -50,48 +58,16 @@ export const Route = createRootRoute({
   },
 });
 
-const LIGHT_THEME_COLOR = "hsl(0 0% 100%)";
-const DARK_THEME_COLOR = "hsl(240deg 10% 3.92%)";
-const THEME_COLOR_SCRIPT = `\
-(function() {
-  var html = document.documentElement;
-  var meta = document.querySelector('meta[name="theme-color"]');
-  if (!meta) {
-    meta = document.createElement('meta');
-    meta.setAttribute('name', 'theme-color');
-    document.head.appendChild(meta);
-  }
-  function updateThemeColor() {
-    var isDark = html.classList.contains('dark');
-    meta.setAttribute('content', isDark ? '${DARK_THEME_COLOR}' : '${LIGHT_THEME_COLOR}');
-  }
-  var observer = new MutationObserver(updateThemeColor);
-  observer.observe(html, { attributes: true, attributeFilter: ['class'] });
-  updateThemeColor();
-})();`;
-
 function RootLayout() {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="en">
       <head>
-        <script
-          dangerouslySetInnerHTML={{
-            __html: THEME_COLOR_SCRIPT,
-          }}
-        />
         <HeadContent />
       </head>
       <body className="antialiased">
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="system"
-          disableTransitionOnChange
-          enableSystem
-        >
-          <Toaster position="top-center" />
-          <Outlet />
-          <Scripts />
-        </ThemeProvider>
+        <Toaster position="top-center" />
+        <Outlet />
+        <Scripts />
       </body>
     </html>
   );

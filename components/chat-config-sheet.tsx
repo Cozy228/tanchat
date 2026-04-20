@@ -62,7 +62,11 @@ export function ChatConfigSheet({
 
   return (
     <div
-      className="fixed inset-0 z-50 flex justify-end bg-black/40 p-3 backdrop-blur-sm md:p-6"
+      /*
+       * Scrim uses a tinted on-surface wash (not pure black) + soft blur,
+       * so the workspace palette still bleeds through.
+       */
+      className="fixed inset-0 z-50 flex justify-end bg-[color-mix(in_oklab,var(--on-surface)_35%,transparent)] p-3 backdrop-blur-sm md:p-6"
       onClick={(event) => {
         if (event.target === event.currentTarget) {
           onOpenChange(false);
@@ -71,17 +75,20 @@ export function ChatConfigSheet({
       role="presentation"
     >
       <div
-        className="w-full max-w-xl rounded-3xl border bg-background p-5 shadow-2xl md:p-6"
+        className="w-full max-w-xl rounded-[28px] bg-surface-container-lowest p-5 shadow-[var(--shadow-lift)] md:p-7"
         role="dialog"
         aria-modal="true"
         aria-labelledby="endpoint-settings-title"
       >
         <div className="flex items-start justify-between gap-4">
           <div className="space-y-2">
-            <h2 className="font-semibold text-2xl" id="endpoint-settings-title">
+            <h2
+              className="text-2xl font-semibold tracking-[-0.02em]"
+              id="endpoint-settings-title"
+            >
               Endpoint settings
             </h2>
-            <p className="text-muted-foreground text-sm">
+            <p className="text-sm leading-6 text-on-surface-variant">
               These settings stay in your browser so you can wire a real backend later without auth
               or database setup.
             </p>
@@ -99,28 +106,16 @@ export function ChatConfigSheet({
         </div>
 
         <div className="grid gap-5 py-6">
-          <div className="grid gap-2">
-            <label
-              className="font-medium text-sm leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-              htmlFor="endpoint-url"
-            >
-              Endpoint URL
-            </label>
+          <Field htmlFor="endpoint-url" label="Endpoint URL">
             <Input
               id="endpoint-url"
               onChange={(event) => updateField("endpointUrl", event.target.value)}
               placeholder="https://api.openai.com/v1/chat/completions"
               value={draft.endpointUrl}
             />
-          </div>
+          </Field>
 
-          <div className="grid gap-2">
-            <label
-              className="font-medium text-sm leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-              htmlFor="api-key"
-            >
-              API Key
-            </label>
+          <Field htmlFor="api-key" label="API Key">
             <Input
               id="api-key"
               onChange={(event) => updateField("apiKey", event.target.value)}
@@ -128,30 +123,18 @@ export function ChatConfigSheet({
               type="password"
               value={draft.apiKey}
             />
-          </div>
+          </Field>
 
-          <div className="grid gap-2">
-            <label
-              className="font-medium text-sm leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-              htmlFor="model-name"
-            >
-              Model
-            </label>
+          <Field htmlFor="model-name" label="Model">
             <Input
               id="model-name"
               onChange={(event) => updateField("model", event.target.value)}
               placeholder="gpt-4.1-mini"
               value={draft.model}
             />
-          </div>
+          </Field>
 
-          <div className="grid gap-2">
-            <label
-              className="font-medium text-sm leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-              htmlFor="system-prompt"
-            >
-              System Prompt
-            </label>
+          <Field htmlFor="system-prompt" label="System Prompt">
             <Textarea
               id="system-prompt"
               onChange={(event) => updateField("systemPrompt", event.target.value)}
@@ -159,7 +142,7 @@ export function ChatConfigSheet({
               rows={6}
               value={draft.systemPrompt}
             />
-          </div>
+          </Field>
         </div>
 
         <div className="flex flex-col gap-2 sm:flex-row sm:justify-between">
@@ -181,6 +164,25 @@ export function ChatConfigSheet({
           </Button>
         </div>
       </div>
+    </div>
+  );
+}
+
+function Field({
+  children,
+  htmlFor,
+  label,
+}: {
+  children: React.ReactNode;
+  htmlFor: string;
+  label: string;
+}) {
+  return (
+    <div className="grid gap-2">
+      <label className="text-sm font-medium leading-none text-foreground" htmlFor={htmlFor}>
+        {label}
+      </label>
+      {children}
     </div>
   );
 }
