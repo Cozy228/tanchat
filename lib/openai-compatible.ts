@@ -1,16 +1,32 @@
 import type { EndpointConfig } from "@/lib/chat-config";
 import type { ChatMessage } from "@/lib/chat-types";
 
-type ChatCompletionsResponse = {
+/*
+ * Union of shapes we've seen in the wild across "OpenAI-compatible" endpoints:
+ *
+ *   - OpenAI Chat Completions: choices[0].message.content (string or parts[])
+ *   - OpenAI Responses API:    output_text (flat) or output[].content[].text
+ *   - Anthropic Messages API:  top-level content[] of {type:"text", text}
+ *
+ * Proxies sometimes mix these (e.g. Anthropic payload wrapped in an OpenAI
+ * envelope), so the extractor below falls through each shape in turn rather
+ * than dispatching on a provider flag.
+ */
+type ContentPart = { text?: string; type?: string };
+type ContentField = string | ContentPart[];
+
+type UniversalReplyPayload = {
   choices?: Array<{
     message?: {
-      content?: string | Array<{ text?: string; type?: string }>;
+      content?: ContentField;
     };
   }>;
+  content?: ContentField;
+  output_text?: string;
+  output?: Array<{ content?: ContentPart[] }>;
   error?: {
     message?: string;
   };
-  output_text?: string;
 };
 
 function getNetworkErrorMessage(error: unknown) {
@@ -42,9 +58,7 @@ function toChatCompletionMessages(config: EndpointConfig, messages: ChatMessage[
   return [{ role: "system", content: config.systemPrompt }, ...requestMessages];
 }
 
-function contentToText(
-  content: string | Array<{ text?: string; type?: string }> | undefined,
-): string {
+function contentToText(content: ContentField | undefined): string {
   if (typeof content === "string") {
     return content.trim();
   }
@@ -60,16 +74,32 @@ function contentToText(
   return "";
 }
 
-function extractAssistantReply(payload: ChatCompletionsResponse) {
+function extractAssistantReply(payload: UniversalReplyPayload) {
   if (typeof payload.output_text === "string" && payload.output_text.trim()) {
     return payload.output_text.trim();
   }
 
-  const choice = payload.choices?.[0];
-  const reply = contentToText(choice?.message?.content);
+  // OpenAI Chat Completions.
+  const openAIReply = contentToText(payload.choices?.[0]?.message?.content);
+  if (openAIReply) {
+    return openAIReply;
+  }
 
-  if (reply) {
-    return reply;
+  // Anthropic Messages (content[] at the top level).
+  const anthropicReply = contentToText(payload.content);
+  if (anthropicReply) {
+    return anthropicReply;
+  }
+
+  // OpenAI Responses API (output[].content[]).
+  const responsesReply = payload.output
+    ?.flatMap((item) => item.content ?? [])
+    .map((part) => part.text?.trim())
+    .filter((part): part is string => Boolean(part))
+    .join("\n")
+    .trim();
+  if (responsesReply) {
+    return responsesReply;
   }
 
   throw new Error("The endpoint response did not include an assistant message.");
@@ -99,7 +129,7 @@ export async function requestOpenAICompatibleReply({
       signal,
     });
 
-    const payload = (await response.json().catch(() => null)) as ChatCompletionsResponse | null;
+    const payload = (await response.json().catch(() => null)) as UniversalReplyPayload | null;
 
     if (!response.ok) {
       const errorMessage = payload?.error?.message || `The endpoint returned ${response.status}.`;
