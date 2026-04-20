@@ -74,15 +74,39 @@ function contentToText(content: ContentField | undefined): string {
   return "";
 }
 
+/*
+ * Some proxies (e.g. Bedrock Access Gateway) use an OpenAI Chat Completions
+ * envelope but set choices[0].message.content to the raw Anthropic Messages
+ * JSON string. If the extracted text looks like JSON, try to unwrap it as an
+ * Anthropic payload before giving up.
+ */
+function tryUnwrapNestedJson(text: string): string {
+  if (!text.trimStart().startsWith("{")) {
+    return text;
+  }
+
+  try {
+    const inner = JSON.parse(text) as UniversalReplyPayload;
+    const nested = contentToText(inner.content);
+    if (nested) {
+      return nested;
+    }
+  } catch {
+    // not JSON — return as-is
+  }
+
+  return text;
+}
+
 function extractAssistantReply(payload: UniversalReplyPayload) {
   if (typeof payload.output_text === "string" && payload.output_text.trim()) {
     return payload.output_text.trim();
   }
 
-  // OpenAI Chat Completions.
+  // OpenAI Chat Completions (possibly with a nested Anthropic JSON string).
   const openAIReply = contentToText(payload.choices?.[0]?.message?.content);
   if (openAIReply) {
-    return openAIReply;
+    return tryUnwrapNestedJson(openAIReply);
   }
 
   // Anthropic Messages (content[] at the top level).
