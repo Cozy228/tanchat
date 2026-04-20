@@ -11,18 +11,6 @@
 import { Route as rootRouteImport } from './app/__root'
 import { Route as chatRouteRouteImport } from './app/(chat)/route'
 import { Route as chatIndexRouteImport } from './app/(chat)/index'
-import { Route as authRegisterIndexRouteImport } from './app/(auth)/register/index'
-import { Route as authLoginIndexRouteImport } from './app/(auth)/login/index'
-import { Route as chatChatChatIdRouteImport } from './app/(chat)/chat/$chatId'
-import { Route as chatApiVoteIndexRouteImport } from './app/(chat)/api/vote/index'
-import { Route as chatApiSuggestionsIndexRouteImport } from './app/(chat)/api/suggestions/index'
-import { Route as chatApiHistoryIndexRouteImport } from './app/(chat)/api/history/index'
-import { Route as chatApiDocumentIndexRouteImport } from './app/(chat)/api/document/index'
-import { Route as chatApiChatIndexRouteImport } from './app/(chat)/api/chat/index'
-import { Route as authApiAuthSplatRouteImport } from './app/(auth)/api/auth/$'
-import { Route as chatApiFilesUploadIndexRouteImport } from './app/(chat)/api/files/upload/index'
-import { Route as authApiAuthGuestIndexRouteImport } from './app/(auth)/api/auth/guest/index'
-import { Route as chatApiChatIdStreamIndexRouteImport } from './app/(chat)/api/chat/$id/stream/index'
 
 const chatRouteRoute = chatRouteRouteImport.update({
   id: '/(chat)',
@@ -33,170 +21,28 @@ const chatIndexRoute = chatIndexRouteImport.update({
   path: '/',
   getParentRoute: () => chatRouteRoute,
 } as any)
-const authRegisterIndexRoute = authRegisterIndexRouteImport.update({
-  id: '/(auth)/register/',
-  path: '/register/',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const authLoginIndexRoute = authLoginIndexRouteImport.update({
-  id: '/(auth)/login/',
-  path: '/login/',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const chatChatChatIdRoute = chatChatChatIdRouteImport.update({
-  id: '/chat/$chatId',
-  path: '/chat/$chatId',
-  getParentRoute: () => chatRouteRoute,
-} as any)
-const chatApiVoteIndexRoute = chatApiVoteIndexRouteImport.update({
-  id: '/api/vote/',
-  path: '/api/vote/',
-  getParentRoute: () => chatRouteRoute,
-} as any)
-const chatApiSuggestionsIndexRoute = chatApiSuggestionsIndexRouteImport.update({
-  id: '/api/suggestions/',
-  path: '/api/suggestions/',
-  getParentRoute: () => chatRouteRoute,
-} as any)
-const chatApiHistoryIndexRoute = chatApiHistoryIndexRouteImport.update({
-  id: '/api/history/',
-  path: '/api/history/',
-  getParentRoute: () => chatRouteRoute,
-} as any)
-const chatApiDocumentIndexRoute = chatApiDocumentIndexRouteImport.update({
-  id: '/api/document/',
-  path: '/api/document/',
-  getParentRoute: () => chatRouteRoute,
-} as any)
-const chatApiChatIndexRoute = chatApiChatIndexRouteImport.update({
-  id: '/api/chat/',
-  path: '/api/chat/',
-  getParentRoute: () => chatRouteRoute,
-} as any)
-const authApiAuthSplatRoute = authApiAuthSplatRouteImport.update({
-  id: '/(auth)/api/auth/$',
-  path: '/api/auth/$',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const chatApiFilesUploadIndexRoute = chatApiFilesUploadIndexRouteImport.update({
-  id: '/api/files/upload/',
-  path: '/api/files/upload/',
-  getParentRoute: () => chatRouteRoute,
-} as any)
-const authApiAuthGuestIndexRoute = authApiAuthGuestIndexRouteImport.update({
-  id: '/(auth)/api/auth/guest/',
-  path: '/api/auth/guest/',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const chatApiChatIdStreamIndexRoute =
-  chatApiChatIdStreamIndexRouteImport.update({
-    id: '/api/chat/$id/stream/',
-    path: '/api/chat/$id/stream/',
-    getParentRoute: () => chatRouteRoute,
-  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof chatIndexRoute
-  '/chat/$chatId': typeof chatChatChatIdRoute
-  '/login': typeof authLoginIndexRoute
-  '/register': typeof authRegisterIndexRoute
-  '/api/auth/$': typeof authApiAuthSplatRoute
-  '/api/chat': typeof chatApiChatIndexRoute
-  '/api/document': typeof chatApiDocumentIndexRoute
-  '/api/history': typeof chatApiHistoryIndexRoute
-  '/api/suggestions': typeof chatApiSuggestionsIndexRoute
-  '/api/vote': typeof chatApiVoteIndexRoute
-  '/api/auth/guest': typeof authApiAuthGuestIndexRoute
-  '/api/files/upload': typeof chatApiFilesUploadIndexRoute
-  '/api/chat/$id/stream': typeof chatApiChatIdStreamIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof chatIndexRoute
-  '/chat/$chatId': typeof chatChatChatIdRoute
-  '/login': typeof authLoginIndexRoute
-  '/register': typeof authRegisterIndexRoute
-  '/api/auth/$': typeof authApiAuthSplatRoute
-  '/api/chat': typeof chatApiChatIndexRoute
-  '/api/document': typeof chatApiDocumentIndexRoute
-  '/api/history': typeof chatApiHistoryIndexRoute
-  '/api/suggestions': typeof chatApiSuggestionsIndexRoute
-  '/api/vote': typeof chatApiVoteIndexRoute
-  '/api/auth/guest': typeof authApiAuthGuestIndexRoute
-  '/api/files/upload': typeof chatApiFilesUploadIndexRoute
-  '/api/chat/$id/stream': typeof chatApiChatIdStreamIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/(chat)': typeof chatRouteRouteWithChildren
   '/(chat)/': typeof chatIndexRoute
-  '/(chat)/chat/$chatId': typeof chatChatChatIdRoute
-  '/(auth)/login/': typeof authLoginIndexRoute
-  '/(auth)/register/': typeof authRegisterIndexRoute
-  '/(auth)/api/auth/$': typeof authApiAuthSplatRoute
-  '/(chat)/api/chat/': typeof chatApiChatIndexRoute
-  '/(chat)/api/document/': typeof chatApiDocumentIndexRoute
-  '/(chat)/api/history/': typeof chatApiHistoryIndexRoute
-  '/(chat)/api/suggestions/': typeof chatApiSuggestionsIndexRoute
-  '/(chat)/api/vote/': typeof chatApiVoteIndexRoute
-  '/(auth)/api/auth/guest/': typeof authApiAuthGuestIndexRoute
-  '/(chat)/api/files/upload/': typeof chatApiFilesUploadIndexRoute
-  '/(chat)/api/chat/$id/stream/': typeof chatApiChatIdStreamIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths:
-    | '/'
-    | '/chat/$chatId'
-    | '/login'
-    | '/register'
-    | '/api/auth/$'
-    | '/api/chat'
-    | '/api/document'
-    | '/api/history'
-    | '/api/suggestions'
-    | '/api/vote'
-    | '/api/auth/guest'
-    | '/api/files/upload'
-    | '/api/chat/$id/stream'
+  fullPaths: '/'
   fileRoutesByTo: FileRoutesByTo
-  to:
-    | '/'
-    | '/chat/$chatId'
-    | '/login'
-    | '/register'
-    | '/api/auth/$'
-    | '/api/chat'
-    | '/api/document'
-    | '/api/history'
-    | '/api/suggestions'
-    | '/api/vote'
-    | '/api/auth/guest'
-    | '/api/files/upload'
-    | '/api/chat/$id/stream'
-  id:
-    | '__root__'
-    | '/(chat)'
-    | '/(chat)/'
-    | '/(chat)/chat/$chatId'
-    | '/(auth)/login/'
-    | '/(auth)/register/'
-    | '/(auth)/api/auth/$'
-    | '/(chat)/api/chat/'
-    | '/(chat)/api/document/'
-    | '/(chat)/api/history/'
-    | '/(chat)/api/suggestions/'
-    | '/(chat)/api/vote/'
-    | '/(auth)/api/auth/guest/'
-    | '/(chat)/api/files/upload/'
-    | '/(chat)/api/chat/$id/stream/'
+  to: '/'
+  id: '__root__' | '/(chat)' | '/(chat)/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   chatRouteRoute: typeof chatRouteRouteWithChildren
-  authLoginIndexRoute: typeof authLoginIndexRoute
-  authRegisterIndexRoute: typeof authRegisterIndexRoute
-  authApiAuthSplatRoute: typeof authApiAuthSplatRoute
-  authApiAuthGuestIndexRoute: typeof authApiAuthGuestIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -215,115 +61,15 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof chatIndexRouteImport
       parentRoute: typeof chatRouteRoute
     }
-    '/(auth)/register/': {
-      id: '/(auth)/register/'
-      path: '/register'
-      fullPath: '/register'
-      preLoaderRoute: typeof authRegisterIndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/(auth)/login/': {
-      id: '/(auth)/login/'
-      path: '/login'
-      fullPath: '/login'
-      preLoaderRoute: typeof authLoginIndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/(chat)/chat/$chatId': {
-      id: '/(chat)/chat/$chatId'
-      path: '/chat/$chatId'
-      fullPath: '/chat/$chatId'
-      preLoaderRoute: typeof chatChatChatIdRouteImport
-      parentRoute: typeof chatRouteRoute
-    }
-    '/(chat)/api/vote/': {
-      id: '/(chat)/api/vote/'
-      path: '/api/vote'
-      fullPath: '/api/vote'
-      preLoaderRoute: typeof chatApiVoteIndexRouteImport
-      parentRoute: typeof chatRouteRoute
-    }
-    '/(chat)/api/suggestions/': {
-      id: '/(chat)/api/suggestions/'
-      path: '/api/suggestions'
-      fullPath: '/api/suggestions'
-      preLoaderRoute: typeof chatApiSuggestionsIndexRouteImport
-      parentRoute: typeof chatRouteRoute
-    }
-    '/(chat)/api/history/': {
-      id: '/(chat)/api/history/'
-      path: '/api/history'
-      fullPath: '/api/history'
-      preLoaderRoute: typeof chatApiHistoryIndexRouteImport
-      parentRoute: typeof chatRouteRoute
-    }
-    '/(chat)/api/document/': {
-      id: '/(chat)/api/document/'
-      path: '/api/document'
-      fullPath: '/api/document'
-      preLoaderRoute: typeof chatApiDocumentIndexRouteImport
-      parentRoute: typeof chatRouteRoute
-    }
-    '/(chat)/api/chat/': {
-      id: '/(chat)/api/chat/'
-      path: '/api/chat'
-      fullPath: '/api/chat'
-      preLoaderRoute: typeof chatApiChatIndexRouteImport
-      parentRoute: typeof chatRouteRoute
-    }
-    '/(auth)/api/auth/$': {
-      id: '/(auth)/api/auth/$'
-      path: '/api/auth/$'
-      fullPath: '/api/auth/$'
-      preLoaderRoute: typeof authApiAuthSplatRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/(chat)/api/files/upload/': {
-      id: '/(chat)/api/files/upload/'
-      path: '/api/files/upload'
-      fullPath: '/api/files/upload'
-      preLoaderRoute: typeof chatApiFilesUploadIndexRouteImport
-      parentRoute: typeof chatRouteRoute
-    }
-    '/(auth)/api/auth/guest/': {
-      id: '/(auth)/api/auth/guest/'
-      path: '/api/auth/guest'
-      fullPath: '/api/auth/guest'
-      preLoaderRoute: typeof authApiAuthGuestIndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/(chat)/api/chat/$id/stream/': {
-      id: '/(chat)/api/chat/$id/stream/'
-      path: '/api/chat/$id/stream'
-      fullPath: '/api/chat/$id/stream'
-      preLoaderRoute: typeof chatApiChatIdStreamIndexRouteImport
-      parentRoute: typeof chatRouteRoute
-    }
   }
 }
 
 interface chatRouteRouteChildren {
   chatIndexRoute: typeof chatIndexRoute
-  chatChatChatIdRoute: typeof chatChatChatIdRoute
-  chatApiChatIndexRoute: typeof chatApiChatIndexRoute
-  chatApiDocumentIndexRoute: typeof chatApiDocumentIndexRoute
-  chatApiHistoryIndexRoute: typeof chatApiHistoryIndexRoute
-  chatApiSuggestionsIndexRoute: typeof chatApiSuggestionsIndexRoute
-  chatApiVoteIndexRoute: typeof chatApiVoteIndexRoute
-  chatApiFilesUploadIndexRoute: typeof chatApiFilesUploadIndexRoute
-  chatApiChatIdStreamIndexRoute: typeof chatApiChatIdStreamIndexRoute
 }
 
 const chatRouteRouteChildren: chatRouteRouteChildren = {
   chatIndexRoute: chatIndexRoute,
-  chatChatChatIdRoute: chatChatChatIdRoute,
-  chatApiChatIndexRoute: chatApiChatIndexRoute,
-  chatApiDocumentIndexRoute: chatApiDocumentIndexRoute,
-  chatApiHistoryIndexRoute: chatApiHistoryIndexRoute,
-  chatApiSuggestionsIndexRoute: chatApiSuggestionsIndexRoute,
-  chatApiVoteIndexRoute: chatApiVoteIndexRoute,
-  chatApiFilesUploadIndexRoute: chatApiFilesUploadIndexRoute,
-  chatApiChatIdStreamIndexRoute: chatApiChatIdStreamIndexRoute,
 }
 
 const chatRouteRouteWithChildren = chatRouteRoute._addFileChildren(
@@ -332,10 +78,6 @@ const chatRouteRouteWithChildren = chatRouteRoute._addFileChildren(
 
 const rootRouteChildren: RootRouteChildren = {
   chatRouteRoute: chatRouteRouteWithChildren,
-  authLoginIndexRoute: authLoginIndexRoute,
-  authRegisterIndexRoute: authRegisterIndexRoute,
-  authApiAuthSplatRoute: authApiAuthSplatRoute,
-  authApiAuthGuestIndexRoute: authApiAuthGuestIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

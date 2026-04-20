@@ -96,32 +96,24 @@ const Theme = ({
   children,
   nonce,
 }: ThemeProviderProps) => {
-  const [theme, setThemeState] = useState(() =>
-    getTheme(storageKey, defaultTheme)
-  );
+  const [theme, setThemeState] = useState(() => getTheme(storageKey, defaultTheme));
 
-  const applyClassAttribute = useCallback(
-    (name: string | undefined, attrValues: string[]) => {
-      const d = document.documentElement;
-      d.classList.remove(...attrValues);
-      if (name) {
-        d.classList.add(name);
-      }
-    },
-    []
-  );
+  const applyClassAttribute = useCallback((name: string | undefined, attrValues: string[]) => {
+    const d = document.documentElement;
+    d.classList.remove(...attrValues);
+    if (name) {
+      d.classList.add(name);
+    }
+  }, []);
 
-  const applyDataAttribute = useCallback(
-    (attr: string, name: string | undefined) => {
-      const d = document.documentElement;
-      if (name) {
-        d.setAttribute(attr, name);
-      } else {
-        d.removeAttribute(attr);
-      }
-    },
-    []
-  );
+  const applyDataAttribute = useCallback((attr: string, name: string | undefined) => {
+    const d = document.documentElement;
+    if (name) {
+      d.setAttribute(attr, name);
+    } else {
+      d.removeAttribute(attr);
+    }
+  }, []);
 
   const applyAttributesToDOM = useCallback(
     (resolved: string) => {
@@ -137,7 +129,7 @@ const Theme = ({
         }
       }
     },
-    [attribute, themes, value, applyClassAttribute, applyDataAttribute]
+    [attribute, themes, value, applyClassAttribute, applyDataAttribute],
   );
 
   const applyColorScheme = useCallback(
@@ -145,13 +137,11 @@ const Theme = ({
       if (!enableColorScheme) {
         return;
       }
-      const fallback = colorSchemes.includes(defaultTheme)
-        ? defaultTheme
-        : null;
+      const fallback = colorSchemes.includes(defaultTheme) ? defaultTheme : null;
       const colorScheme = colorSchemes.includes(resolved) ? resolved : fallback;
       document.documentElement.style.colorScheme = colorScheme || "";
     },
-    [enableColorScheme, defaultTheme]
+    [enableColorScheme, defaultTheme],
   );
 
   // apply selected theme function (light, dark, system)
@@ -161,8 +151,7 @@ const Theme = ({
         return;
       }
 
-      const resolved =
-        nextTheme === "system" && enableSystem ? getSystemTheme() : nextTheme;
+      const resolved = nextTheme === "system" && enableSystem ? getSystemTheme() : nextTheme;
 
       const enable = disableTransitionOnChange ? disableAnimation() : null;
 
@@ -171,19 +160,13 @@ const Theme = ({
 
       enable?.();
     },
-    [
-      enableSystem,
-      disableTransitionOnChange,
-      applyAttributesToDOM,
-      applyColorScheme,
-    ]
+    [enableSystem, disableTransitionOnChange, applyAttributesToDOM, applyColorScheme],
   );
 
   // Set theme state and save to local storage
   const setTheme = useCallback(
     (newValue: SetStateAction<string>) => {
-      const newTheme =
-        typeof newValue === "function" ? newValue(theme ?? "") : newValue;
+      const newTheme = typeof newValue === "function" ? newValue(theme ?? "") : newValue;
       setThemeState(newTheme);
 
       // Save to storage
@@ -193,7 +176,7 @@ const Theme = ({
         // localStorage might not be available
       }
     },
-    [theme, storageKey]
+    [theme, storageKey],
   );
 
   const handleMediaQuery = useCallback(
@@ -202,7 +185,7 @@ const Theme = ({
         applyTheme("system");
       }
     },
-    [applyTheme, enableSystem, forcedTheme, theme]
+    [applyTheme, enableSystem, forcedTheme, theme],
   );
 
   // Always listen to System preference
@@ -246,12 +229,9 @@ const Theme = ({
   }, [applyTheme, forcedTheme, theme]);
 
   const providerValue = useMemo(() => {
-    const systemThemeValue = enableSystem
-      ? (getSystemTheme() as "dark" | "light")
-      : undefined;
+    const systemThemeValue = enableSystem ? (getSystemTheme() as "dark" | "light") : undefined;
 
-    const resolvedTheme =
-      theme === "system" && enableSystem ? systemThemeValue : theme;
+    const resolvedTheme = theme === "system" && enableSystem ? systemThemeValue : theme;
 
     return {
       theme,
@@ -316,7 +296,7 @@ const ThemeScript = memo(
         suppressHydrationWarning
       />
     );
-  }
+  },
 );
 
 ThemeScript.displayName = "ThemeScript";
@@ -339,8 +319,8 @@ const disableAnimation = () => {
   const css = document.createElement("style");
   css.appendChild(
     document.createTextNode(
-      "*,*::before,*::after{-webkit-transition:none!important;-moz-transition:none!important;-o-transition:none!important;-ms-transition:none!important;transition:none!important}"
-    )
+      "*,*::before,*::after{-webkit-transition:none!important;-moz-transition:none!important;-o-transition:none!important;-ms-transition:none!important;transition:none!important}",
+    ),
   );
   document.head.appendChild(css);
 
@@ -379,7 +359,7 @@ export const script = (
   themes: string[],
   value: ValueObject | undefined,
   enableSystem: boolean,
-  enableColorScheme: boolean
+  enableColorScheme: boolean,
 ) => {
   const el = document.documentElement;
   const systemThemes = ["light", "dark"];
@@ -426,16 +406,12 @@ export const script = (
   }
 
   function resolveSystemTheme() {
-    return window.matchMedia("(prefers-color-scheme: dark)").matches
-      ? "dark"
-      : "light";
+    return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
   }
 
   if (forcedTheme) {
     const resolvedForcedTheme =
-      forcedTheme === "system" && enableSystem
-        ? resolveSystemTheme()
-        : forcedTheme;
+      forcedTheme === "system" && enableSystem ? resolveSystemTheme() : forcedTheme;
     updateDOM(resolvedForcedTheme);
   } else {
     try {

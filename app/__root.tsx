@@ -1,30 +1,9 @@
-import {
-  createRootRoute,
-  HeadContent,
-  Outlet,
-  Scripts,
-} from "@tanstack/react-router";
-import { createServerFn } from "@tanstack/react-start";
-import { getRequestHeaders } from "@tanstack/react-start/server";
+import { createRootRoute, HeadContent, Outlet, Scripts } from "@tanstack/react-router";
 import { Toaster } from "sonner";
-import { QueryProvider } from "@/components/query-provider";
-import { SessionProvider } from "@/components/session-provider";
 import { ThemeProvider } from "@/components/theme-provider";
-import { auth } from "./(auth)/-utils/auth";
 import appCss from "./globals.css?url";
 
-const loader = createServerFn().handler(async () => {
-  const session = await auth.api.getSession({
-    headers: getRequestHeaders(),
-  });
-
-  return {
-    session,
-  };
-});
-
 export const Route = createRootRoute({
-  loader: () => loader(),
   head: () => ({
     meta: [
       { charSet: "utf-8" },
@@ -32,25 +11,23 @@ export const Route = createRootRoute({
         name: "viewport",
         content: "width=device-width, initial-scale=1",
       },
-      { title: "TanStack Start Chatbot Template" },
+      { title: "TanChat" },
       {
         name: "description",
-        content: "TanStack Start chatbot template using the AI SDK.",
+        content: "Chat with a custom OpenAI-compatible endpoint.",
       },
-      { property: "og:title", content: "TanStack Start Chatbot Template" },
+      { property: "og:title", content: "TanChat" },
       {
         property: "og:description",
-        content: "TanStack Start chatbot template using the AI SDK.",
+        content: "Chat with a custom OpenAI-compatible endpoint.",
       },
-      { property: "og:image", content: "/images/opengraph-image.png" },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
-      { name: "twitter:title", content: "TanStack Start Chatbot Template" },
+      { name: "twitter:title", content: "TanChat" },
       {
         name: "twitter:description",
-        content: "TanStack Start chatbot template using the AI SDK.",
+        content: "Chat with a custom OpenAI-compatible endpoint.",
       },
-      { name: "twitter:image", content: "/images/opengraph-image.png" },
     ],
     links: [
       {
@@ -59,13 +36,7 @@ export const Route = createRootRoute({
       },
       {
         rel: "icon",
-        type: "image/png",
-        href: "/images/favicon.png",
-      },
-    ],
-    scripts: [
-      {
-        src: "https://cdn.jsdelivr.net/pyodide/v0.23.4/full/pyodide.js",
+        href: "/favicon.ico",
       },
     ],
   }),
@@ -100,19 +71,10 @@ const THEME_COLOR_SCRIPT = `\
 })();`;
 
 function RootLayout() {
-  const { session } = Route.useLoaderData();
-
   return (
-    <html
-      // The custom ThemeProvider injects an inline script to avoid
-      // visual flicker before hydration. Hence the `suppressHydrationWarning`
-      // prop is necessary to avoid the React hydration mismatch warning.
-      lang="en"
-      suppressHydrationWarning
-    >
+    <html lang="en" suppressHydrationWarning>
       <head>
         <script
-          // biome-ignore lint/security/noDangerouslySetInnerHtml: "Required"
           dangerouslySetInnerHTML={{
             __html: THEME_COLOR_SCRIPT,
           }}
@@ -120,20 +82,16 @@ function RootLayout() {
         <HeadContent />
       </head>
       <body className="antialiased">
-        <SessionProvider initialSession={session}>
-          <QueryProvider>
-            <ThemeProvider
-              attribute="class"
-              defaultTheme="system"
-              disableTransitionOnChange
-              enableSystem
-            >
-              <Toaster position="top-center" />
-              <Outlet />
-              <Scripts />
-            </ThemeProvider>
-          </QueryProvider>
-        </SessionProvider>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          disableTransitionOnChange
+          enableSystem
+        >
+          <Toaster position="top-center" />
+          <Outlet />
+          <Scripts />
+        </ThemeProvider>
       </body>
     </html>
   );

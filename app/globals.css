@@ -1,19 +1,11 @@
 @import "tailwindcss";
 @import "@fontsource-variable/geist";
 @import "@fontsource-variable/geist-mono";
-/* @import "katex/dist/katex.min.css"; */
 
-/* include utility classes in streamdown */
 @source '../node_modules/streamdown/dist/index.js';
-
-/* custom variant for setting dark mode programmatically */
 @custom-variant dark (&:is(.dark, .dark *));
-
-/* include plugins */
 @plugin "tailwindcss-animate";
-@plugin "@tailwindcss/typography";
 
-/* define design tokens (light mode) */
 :root {
   --background: hsl(0 0% 100%);
   --foreground: hsl(240 10% 3.9%);
@@ -47,12 +39,10 @@
   --sidebar-accent-foreground: hsl(240 5.9% 10%);
   --sidebar-border: hsl(220 13% 91%);
   --sidebar-ring: hsl(217.2 91.2% 59.8%);
-  /* border radius unit */
   --radius: 0.5rem;
   --sidebar: hsl(0 0% 98%);
 }
 
-/* define design tokens (dark mode) */
 .dark {
   --background: hsl(240 10% 3.9%);
   --foreground: hsl(0 0% 98%);
@@ -89,51 +79,39 @@
   --sidebar: hsl(240 5.9% 10%);
 }
 
-/* define theme */
 @theme {
   --font-sans: "Geist Variable", sans-serif;
   --font-mono: "Geist Mono Variable", monospace;
 
   --breakpoint-toast-mobile: 600px;
-
   --radius-lg: var(--radius);
   --radius-md: calc(var(--radius) - 2px);
   --radius-sm: calc(var(--radius) - 4px);
 
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-
   --color-card: var(--card);
   --color-card-foreground: var(--card-foreground);
-
   --color-popover: var(--popover);
   --color-popover-foreground: var(--popover-foreground);
-
   --color-primary: var(--primary);
   --color-primary-foreground: var(--primary-foreground);
-
   --color-secondary: var(--secondary);
   --color-secondary-foreground: var(--secondary-foreground);
-
   --color-muted: var(--muted);
   --color-muted-foreground: var(--muted-foreground);
-
   --color-accent: var(--accent);
   --color-accent-foreground: var(--accent-foreground);
-
   --color-destructive: var(--destructive);
   --color-destructive-foreground: var(--destructive-foreground);
-
   --color-border: var(--border);
   --color-input: var(--input);
   --color-ring: var(--ring);
-
   --color-chart-1: var(--chart-1);
   --color-chart-2: var(--chart-2);
   --color-chart-3: var(--chart-3);
   --color-chart-4: var(--chart-4);
   --color-chart-5: var(--chart-5);
-
   --color-sidebar: var(--sidebar-background);
   --color-sidebar-foreground: var(--sidebar-foreground);
   --color-sidebar-primary: var(--sidebar-primary);
@@ -144,14 +122,6 @@
   --color-sidebar-ring: var(--sidebar-ring);
 }
 
-/*
-  The default border color has changed to `currentcolor` in Tailwind CSS v4,
-  so we've added these compatibility styles to make sure everything still
-  looks the same as it did with Tailwind CSS v3.
-
-  If we ever want to remove these styles, we need to add an explicit border
-  color utility to any element that depends on these defaults.
-*/
 @layer base {
   *,
   ::after,
@@ -192,9 +162,7 @@
       --background-end-rgb: 0, 0, 0;
     }
   }
-}
 
-@layer base {
   * {
     @apply border-border;
   }
@@ -269,7 +237,6 @@
   @apply bg-blue-200 hover:bg-blue-300 dark:hover:bg-blue-400/50 dark:text-blue-50 dark:bg-blue-500/40;
 }
 
-/* minimal scrollbar styling */
 ::-webkit-scrollbar {
   width: 6px;
   height: 6px;
@@ -293,7 +260,6 @@
   background: transparent;
 }
 
-/* firefox scrollbar styling */
 * {
   scrollbar-width: thin;
   scrollbar-color: var(--border) transparent;
@@ -314,7 +280,58 @@
   * {
     @apply border-border outline-ring/50;
   }
+
   body {
     @apply bg-background text-foreground;
+  }
+}
+
+@layer components {
+  .glass-panel {
+    @apply border bg-card text-card-foreground shadow-sm;
+  }
+
+  .streamdown {
+    @apply text-sm leading-7;
+  }
+
+  .streamdown p + p {
+    @apply mt-4;
+  }
+
+  .streamdown ul,
+  .streamdown ol {
+    @apply my-4 pl-5;
+  }
+
+  .streamdown li + li {
+    @apply mt-2;
+  }
+
+  .streamdown a {
+    @apply text-primary underline underline-offset-4;
+  }
+
+  .streamdown pre {
+    @apply my-4 overflow-x-auto rounded-2xl border bg-muted/60 p-4;
+  }
+
+  .streamdown code {
+    @apply rounded bg-muted px-1.5 py-0.5 font-mono text-[0.925em];
+  }
+
+  .streamdown pre code {
+    @apply bg-transparent p-0 text-inherit;
+  }
+
+  .streamdown blockquote {
+    @apply my-4 border-l-2 border-primary/40 pl-4 text-muted-foreground;
+  }
+
+  .streamdown h1,
+  .streamdown h2,
+  .streamdown h3,
+  .streamdown h4 {
+    @apply mt-6 mb-3 font-semibold tracking-tight;
   }
 }

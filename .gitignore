@@ -44,3 +44,6 @@ yarn-error.log*
 /playwright/*
 
 dist/
+.output/
+routeTree.gen.ts
+tsconfig.tsbuildinfo
